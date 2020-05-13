@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const index=require("./routes/index.route");
 
 var app = express();
-var server = app.listen(8080);
+var server = app.listen(12011);
 //使用body-parser中间件
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}));
