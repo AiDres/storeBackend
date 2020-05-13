@@ -25,14 +25,20 @@ router.post("/addstore",(req,res)=>{
 router.get("/storelist",(req,res)=>{
   pool.query("SELECT * FROM store_manage;",(err,result)=>{
     if(err)throw err;
-    if(result.length!=0){
-      res.send({code:200,data:result});
-    }else{
-      res.send({code:301,data:[]});
-    }
+    res.send({code:200,data:result});
   });
 })
 router.get("/storedetail",(req,res)=>{
- res.send({msg:"storedetail"});
+ 	let params = req.query;
+ 	if(params!="{}"){
+ 		let id = params.store_id;
+ 		pool.query("SELECT * FROM store_manage WHERE store_id=?",[id],(err,result)=>{
+ 			if(err)throw err;
+ 			res.send({code:200,data:result});
+ 		})
+ 		
+ 	}else{
+ 		res.send({code:301,msg:'地址请求异常'})
+ 	}
 })
 module.exports=router;
