@@ -2,6 +2,20 @@ const express=require("express")
 const router=express.Router();
 const pool=require("../pool");
 
+// 处理图片
+var multer  = require('multer');
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'public/images/news')
+    },
+    filename: (req, file, cb) => {
+      cb(null,file.originalname)
+    }
+});
+var upload = multer({storage: storage});
+
+
+// 添加门店
 router.post("/addstore",(req,res)=>{
   let params = req.body;
   if(params!="{}"){
@@ -22,12 +36,14 @@ router.post("/addstore",(req,res)=>{
     res.send({code:202,msg:"数据不能为空"});  
   }
 })
+// 门店列表
 router.get("/storelist",(req,res)=>{
   pool.query("SELECT * FROM store_manage;",(err,result)=>{
     if(err)throw err;
     res.send({code:200,data:result});
   });
 })
+// 门店详情
 router.get("/storedetail",(req,res)=>{
  	let params = req.query;
  	if(params!="{}"){
